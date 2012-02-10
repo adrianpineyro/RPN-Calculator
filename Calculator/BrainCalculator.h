@@ -3,7 +3,7 @@
 //  Calculator
 //
 //  Created by Adrián Piñeyro on 21/01/12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//  Copyright (c) 2012 unpocodesensatez.com.ar. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>

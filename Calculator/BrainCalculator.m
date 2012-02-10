@@ -3,7 +3,7 @@
 //  Calculator
 //
 //  Created by Adrián Piñeyro on 21/01/12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//  Copyright (c) 2012 unpocodesensatez.com.ar. All rights reserved.
 //
 
 #import "BrainCalculator.h"
@@ -16,6 +16,7 @@
 
 @synthesize programStack = _programStack;
 
+//Lazy inizialitation
 -(NSMutableArray *) programStack
 {
     if(!_programStack){
@@ -24,24 +25,26 @@
     return _programStack;
 }
 
+//Add a operand to the programStack
 -(void) pushOperand:(double)operand
 {
     NSNumber *operandObject = [NSNumber numberWithDouble:operand];
     [self.programStack addObject:operandObject];
-    //NSLog(@"push operand!");
-    //NSLog(@"%@",[self.operationStack componentsJoinedByString:@","]);
 }
 
+//Add the operation to the programStack and call class method runProgram to get the result (Only for backward compatibility)
 -(double) performOperation:(NSString *)operation
 {
     [self.programStack addObject:operation];
     return [[BrainCalculator runProgram:self.program] doubleValue];
 }
 
+//My program is actually the programStack, return a non-mutable copy
 -(id)program
 {
     return [self.programStack copy];
 }
+
 
 + (BOOL)isOperation:(NSString *)operation
 {
@@ -61,6 +64,7 @@
     return NO;
 }
 
+//Delete begining "(" and final ")" of a string
 +(NSString *) removeBorderParentheses:(NSString *)operation{
     
     if ([operation hasPrefix:@"("] && [operation hasSuffix:@")"]) {
@@ -74,6 +78,7 @@
     return operation;
 }
 
+//Return a description of the operation on the top of the stack, it call its self if find more operation on the top of the stack
 +(NSString *)descriptionOfTopOfStack:(NSMutableArray *)stack
 {
     
@@ -85,21 +90,21 @@
     
     if ([topOfStack isKindOfClass:[NSString class]]) {
         if ([self isOperation:topOfStack]) {
-            // Es una operacioón
+            // Is an operation
             if ([self isTwoOperandOperation:topOfStack]) {
-                //Es una operación de dos operadores
+                //Is a two operand operation
                 id lastOperand =  [self descriptionOfTopOfStack:stack];
                 description =  [NSString stringWithFormat:@"(%@ %@ %@)",[self descriptionOfTopOfStack:stack], topOfStack,lastOperand];
             } else {
-                //Es una operación de un operador
+                //Is an one operand operation
                 if ([topOfStack isEqualToString:@"π"]){
                     description =  [NSString stringWithFormat:@" %@ ",topOfStack];
-                    //Salvado de operación inversión
+                    //Show +/- in a proper form for a description e.g: (+/-)1 -> (-1)1
                 }else if([topOfStack isEqualToString:@"+/-"]){
                     id lastOperand =  [self descriptionOfTopOfStack:stack];
                     description =  [NSString stringWithFormat:@" (-1)%@ ",lastOperand];
                 }else{
-                    //Si lo anterior ya era una operación de dos operadores entonces no lleva parentesis, ej.: sqrt((2+2)) -> sqrt (2+2)
+                    //If the next of top of stack is an operetion, I have to remove parentheses, e.g. sqrt((2+2)) -> sqrt (2+2)
                     if ([self isTwoOperandOperation:[stack lastObject]]) {
                         description =  [NSString stringWithFormat:@" %@ %@ ",topOfStack,[self descriptionOfTopOfStack:stack]];
                     }else{
@@ -108,17 +113,19 @@
                 }
             }
         } else {
-            //Si es un string y no es una operación, entonces es una variable
+            //If it is a string but no an operation, then it must be a variable
             description =  [NSString stringWithFormat:@"%@",topOfStack];
         }
     } else if ([topOfStack isKindOfClass:[NSNumber class]]) {
-        //Es un número
+        //Is a number
         description =  [NSString stringWithFormat:@"%@",topOfStack];
     }
     
     return description;
     
 }
+
+//Return a description of the given program
 
 +(NSString *)descriptionOfProgram:(id)program
 {
@@ -130,10 +137,10 @@
     }
     
     description = [self descriptionOfTopOfStack:stack];
-    //Eliminamos parentesis externos. Ej.: (2+2) -> 2+2
+    //Remove parentheses. e.g. (2+2) -> 2+2
     description = [self removeBorderParentheses:description];
     
-    //Agremos el resto de las operaciones en el stack separadas por coma
+    //Add the rest of the stack to the description, until finish, separte by commas
     while(stack.count > 0){
         description = [description stringByAppendingString:[NSString stringWithFormat:@", %@",[self removeBorderParentheses:[self descriptionOfTopOfStack:stack]]]];
     }
@@ -141,7 +148,8 @@
     return description;
 }
 
-//Devuelve el resultado de la operacion en el tope del stack, se llama recursivamente si se encuentra con más operaciones para resolver el tope
+//Its returns a NSNumber (if no error) with the result of the operation on the top of the programStack, it call its self if it find more operation
+//If an error occurred (mathematical operations), return a NSString with a description of the error
 +(id) popOperandOffStack:(NSMutableArray *)stack
 {
     id result;
@@ -195,6 +203,7 @@
     return result;
 }
 
+//Get a mutable copy of the programStack a get the result
 +(id)runProgram:(id)program
 {
     NSMutableArray *stack;
@@ -204,6 +213,7 @@
     return [self popOperandOffStack:stack];
 }
 
+//Get a mutable copy of the programStack a get the result, it recive variables: replace string with value
 +(id)runProgram:(id)program usingVariableValues:(NSDictionary *)variableValues;
 {
     NSMutableArray *stack;
@@ -216,9 +226,9 @@
     for (int i = 0; i < stack.count ; i++) {
         if ([[stack objectAtIndex:i] isKindOfClass:[NSString class]]) {
             
-            //Si es un string lo busco en el diccionario
+            //If it is a string, look up on the diccionary
             variableValue = [variableValues objectForKey:[stack objectAtIndex:i]];
-            //De encontrarlo, reemplazo el string por su valor
+            //if find, replace string with the value
             if (variableValue) [stack replaceObjectAtIndex:i withObject:variableValue];
             
         }
@@ -234,7 +244,7 @@
     
     variableKeys = [NSMutableSet set];
     
-    //Obtenemos una copia si es valido
+    //Get a copy, if this is an array
     if ([program isKindOfClass:[NSArray class]]) {
         stack = [program mutableCopy];
     }
@@ -245,17 +255,16 @@
             NSString *variable;
             
             variable = [stack objectAtIndex:i];
-            
-            //Si es un string y no es una operación, entonces es una variable
+            //If it is a string but no an operation, then it must be a variable
             if (![self isOperation:variable]) [variableKeys addObject:variable];
-            
         }
     }
     
-    //if(!variableKeys) return nil;
+    if(!variableKeys) return nil;
     return [variableKeys copy];
 }
 
+//Remove all the objects from the programStack
 -(void) clearOperationStack
 {
     [self.programStack removeAllObjects];

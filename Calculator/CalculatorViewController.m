@@ -3,7 +3,7 @@
 //  Calculator
 //
 //  Created by Adrián Piñeyro on 21/01/12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//  Copyright (c) 2012 unpocodesensatez.com.ar. All rights reserved.
 //
 
 #import "CalculatorViewController.h"
@@ -24,6 +24,7 @@
 @synthesize testVariableValues = _testVariableValues;
 @synthesize stack = _stack;
 
+//Lazy initialization
 -(NSMutableArray *) stack{
     if(!_stack) _stack = [[NSMutableArray alloc] init];
     return _stack;
@@ -38,6 +39,7 @@
     return _testVariableValues;
 }
 
+//Returns a string with the value of the used varibles. Format: variable = value
 -(NSString *)showVariablesUsed:(id)program{
     NSString *variablesList;
     NSSet *variablesUsed;
@@ -47,10 +49,12 @@
     variablesList = @"";
     
     variablesUsed = [BrainCalculator variablesUsedInProgram:program];
+    //Make an array to manually iterate it
     keys = [NSArray  arrayWithArray:[variablesUsed allObjects]];
     
     for (int i=0; i < keys.count; i++) {
         if([self.testVariableValues objectForKey:[keys objectAtIndex:i]]){
+            //If the key is in testVariableValues, it is used an it must be show 
             text = [NSString stringWithFormat:@"%@ = %@ ",[keys objectAtIndex:i],[self.testVariableValues valueForKey:[keys objectAtIndex:i]]]; 
             variablesList = [variablesList stringByAppendingString:text];
         }
@@ -75,7 +79,7 @@
     self.log.text = [BrainCalculator descriptionOfProgram:program];
     self.variablesValues.text = [self showVariablesUsed:program];
     
-    //Limitamos a las últimas operaciones a mostrar en el log
+    //Limit to not show the hole description, just the last 40
     if (self.log.text.length > 40)
         self.log.text = [[self.log.text substringToIndex:40] stringByAppendingString:@" ..."];
     
@@ -86,7 +90,7 @@
     NSString *digit = [sender currentTitle];
     
     if (self.userIsInTheMiddleOfEnteringANumber){
-        // No permite ingresar más de un punto
+        //Only one decimal point allowed
         NSRange range = [self.display.text rangeOfString:@"."];
         if (range.location != NSNotFound && [digit isEqualToString:@"."]) {
             return;
@@ -95,7 +99,7 @@
         self.display.text = [self.display.text stringByAppendingString:digit]; 
         
     } else {
-        //pongo un cero delante si puso .0
+        //Fill with 0 if user select "." e.g. ".5" -> "0.5"
         if ([digit isEqualToString:@"."]){
             self.display.text = @"0.";
         }else{
@@ -116,28 +120,32 @@
 
 - (IBAction)operationPressed:(UIButton *)sender {
     if (self.userIsInTheMiddleOfEnteringANumber && ![[sender currentTitle] isEqualToString:@"+/-"]) {
-        //Le ahorro un enter al usuario
+        //So the user doesn't have to press enter if the number is the last number of the operation
         [self enterPressed];
     }
     
+    //Special trateament to the "+/-" operation
     if(self.userIsInTheMiddleOfEnteringANumber && [[sender currentTitle] isEqualToString:@"+/-"]){
-        //Agregamos el valor de numero al stack
+        //Add the value to the stack
         [self.stack addObject:[NSNumber numberWithDouble:[self.display.text doubleValue]]];
-        //Agreamos la operación
+        //Add the operation
         [self.stack addObject:[sender currentTitle]];
-        //La ejecutamos
+        //Get the result
         [self updateView];
         
-        //Removemos la operación y el objeto, quedando así solamente display con signo opuesto y la posibilidad de seguir ingresando numeros
+        //Remove the operation and the number, leaving the display with opposite sign and allow the posibility to continue adding numbers
         [self.stack removeLastObject];
         [self.stack removeLastObject];
         
     }else {
+        //Add the operation
         [self.stack addObject:[sender currentTitle]];
+        //Show the result
         [self updateView];
     }
 }
 
+//Clear the stack and all the labels
 - (IBAction)clearPressed {
     
     self.userIsInTheMiddleOfEnteringANumber = NO;
@@ -147,21 +155,23 @@
     [self.stack removeAllObjects];
 }
 
+//This is for delete the last number pressed or the last operand/operation sent
 - (IBAction)backspacePressed {
-    //Eliminamos el último caracter
+    //Delete last digit from the label
     self.display.text = [self.display.text substringToIndex:[self.display.text length]-1];
     
-    //Borramos del stack el último valor del stack si no está ingresando el numero
     if( !self.userIsInTheMiddleOfEnteringANumber){
+        //Delete from the stack the last objet if the user was not entering a number
         [self.stack removeLastObject];
         [self updateView];
-        //Si borro todo pongo el último resultado 
     } else if([self.display.text isEqualToString:@""]){
+        //If get empty, show the last result
         [self updateView];
         self.userIsInTheMiddleOfEnteringANumber = NO; 
     }
     
 }
+
 - (IBAction)variablePressed:(id)sender {
     
     self.display.text = [sender currentTitle];
