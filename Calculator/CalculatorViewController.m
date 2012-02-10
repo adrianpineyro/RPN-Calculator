@@ -79,7 +79,7 @@
     self.log.text = [BrainCalculator descriptionOfProgram:program];
     self.variablesValues.text = [self showVariablesUsed:program];
     
-    //Limit to not show the hole description, just the last 40
+    //Limit to not show the whole description, just the last 40
     if (self.log.text.length > 40)
         self.log.text = [[self.log.text substringToIndex:40] stringByAppendingString:@" ..."];
     

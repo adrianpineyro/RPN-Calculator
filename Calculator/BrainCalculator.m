@@ -25,7 +25,7 @@
     return _programStack;
 }
 
-//Add a operand to the programStack
+//Add an operand to the programStack
 -(void) pushOperand:(double)operand
 {
     NSNumber *operandObject = [NSNumber numberWithDouble:operand];
@@ -90,7 +90,7 @@
     
     if ([topOfStack isKindOfClass:[NSString class]]) {
         if ([self isOperation:topOfStack]) {
-            // Is an operation
+            //Is an operation
             if ([self isTwoOperandOperation:topOfStack]) {
                 //Is a two operand operation
                 id lastOperand =  [self descriptionOfTopOfStack:stack];
@@ -126,7 +126,6 @@
 }
 
 //Return a description of the given program
-
 +(NSString *)descriptionOfProgram:(id)program
 {
     NSMutableArray *stack;
@@ -140,7 +139,7 @@
     //Remove parentheses. e.g. (2+2) -> 2+2
     description = [self removeBorderParentheses:description];
     
-    //Add the rest of the stack to the description, until finish, separte by commas
+    //Add the rest of the stack to the description, until finish, separted by commas
     while(stack.count > 0){
         description = [description stringByAppendingString:[NSString stringWithFormat:@", %@",[self removeBorderParentheses:[self descriptionOfTopOfStack:stack]]]];
     }
@@ -148,7 +147,7 @@
     return description;
 }
 
-//Its returns a NSNumber (if no error) with the result of the operation on the top of the programStack, it call its self if it find more operation
+//Its returns a NSNumber (if no error) with the result of the operation on the top of the programStack, it calls its self if it find more operation
 //If an error occurred (mathematical operations), return a NSString with a description of the error
 +(id) popOperandOffStack:(NSMutableArray *)stack
 {
@@ -213,7 +212,7 @@
     return [self popOperandOffStack:stack];
 }
 
-//Get a mutable copy of the programStack a get the result, it recive variables: replace string with value
+//Get a mutable copy of the programStack a get the result, it receive variables: replace string with value
 +(id)runProgram:(id)program usingVariableValues:(NSDictionary *)variableValues;
 {
     NSMutableArray *stack;
