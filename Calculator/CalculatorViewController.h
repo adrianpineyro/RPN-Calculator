@@ -12,5 +12,6 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *display;
 @property (weak, nonatomic) IBOutlet UILabel *log;
+@property (weak, nonatomic) IBOutlet UILabel *variablesValues;
 
 @end
