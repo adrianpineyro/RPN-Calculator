@@ -10,7 +10,13 @@
 
 @interface BrainCalculator : NSObject
 
--(double) performOperation:(NSString *)operation;
--(void) pushOperand:(double)operand;
--(void) clearOperationStack;
+- (double) performOperation:(NSString *)operation;
+- (void) pushOperand:(double)operand;
+- (void) clearOperationStack;
+
+@property (readonly) id program;
++ (id) runProgram:(id)program;
++ (NSString *) descriptionOfProgram:(id)program;
++ (id)runProgram:(id)program usingVariableValues:(NSDictionary *)variableValues;
++ (NSSet *)variablesUsedInProgram:(id)program;
 @end
