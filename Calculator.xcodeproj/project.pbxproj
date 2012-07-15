@@ -16,6 +16,9 @@
 		3A21D2D614CB3215008B111B /* CalculatorAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A21D2D514CB3215008B111B /* CalculatorAppDelegate.m */; };
 		3A21D2D914CB3215008B111B /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3A21D2D714CB3215008B111B /* MainStoryboard.storyboard */; };
 		3A21D2DC14CB3215008B111B /* CalculatorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A21D2DB14CB3215008B111B /* CalculatorViewController.m */; };
+		3A429A7915B37DB8009C6AAA /* GraphView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A429A7815B37DB8009C6AAA /* GraphView.m */; };
+		3A429A8215B37E74009C6AAA /* GraphViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A429A8115B37E74009C6AAA /* GraphViewController.m */; };
+		3AAE25ED15B380170043081E /* AxesDrawer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AAE25EC15B380170043081E /* AxesDrawer.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +37,12 @@
 		3A21D2D814CB3215008B111B /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
 		3A21D2DA14CB3215008B111B /* CalculatorViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CalculatorViewController.h; sourceTree = "<group>"; };
 		3A21D2DB14CB3215008B111B /* CalculatorViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CalculatorViewController.m; sourceTree = "<group>"; };
+		3A429A7715B37DB8009C6AAA /* GraphView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GraphView.h; sourceTree = "<group>"; };
+		3A429A7815B37DB8009C6AAA /* GraphView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GraphView.m; sourceTree = "<group>"; };
+		3A429A8015B37E74009C6AAA /* GraphViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GraphViewController.h; sourceTree = "<group>"; };
+		3A429A8115B37E74009C6AAA /* GraphViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GraphViewController.m; sourceTree = "<group>"; };
+		3AAE25EB15B380170043081E /* AxesDrawer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AxesDrawer.h; sourceTree = "<group>"; };
+		3AAE25EC15B380170043081E /* AxesDrawer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AxesDrawer.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,6 +89,8 @@
 		3A21D2CB14CB3215008B111B /* Calculator */ = {
 			isa = PBXGroup;
 			children = (
+				3AAE25EB15B380170043081E /* AxesDrawer.h */,
+				3AAE25EC15B380170043081E /* AxesDrawer.m */,
 				3A21D2D414CB3215008B111B /* CalculatorAppDelegate.h */,
 				3A21D2D514CB3215008B111B /* CalculatorAppDelegate.m */,
 				3A21D2D714CB3215008B111B /* MainStoryboard.storyboard */,
@@ -88,6 +99,10 @@
 				3A21D2DA14CB3215008B111B /* CalculatorViewController.h */,
 				3A21D2DB14CB3215008B111B /* CalculatorViewController.m */,
 				3A21D2CC14CB3215008B111B /* Supporting Files */,
+				3A429A7715B37DB8009C6AAA /* GraphView.h */,
+				3A429A7815B37DB8009C6AAA /* GraphView.m */,
+				3A429A8015B37E74009C6AAA /* GraphViewController.h */,
+				3A429A8115B37E74009C6AAA /* GraphViewController.m */,
 			);
 			path = Calculator;
 			sourceTree = "<group>";
@@ -169,6 +184,9 @@
 				3A21D2D614CB3215008B111B /* CalculatorAppDelegate.m in Sources */,
 				3A21D2DC14CB3215008B111B /* CalculatorViewController.m in Sources */,
 				3A1B737414CB475400362967 /* BrainCalculator.m in Sources */,
+				3A429A7915B37DB8009C6AAA /* GraphView.m in Sources */,
+				3A429A8215B37E74009C6AAA /* GraphViewController.m in Sources */,
+				3AAE25ED15B380170043081E /* AxesDrawer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
