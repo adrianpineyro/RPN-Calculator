@@ -505,11 +505,14 @@
                                 <state key="highlighted">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="graphPressed:" destination="2" eventType="touchUpInside" id="w5F-Wc-tCN"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" id="SZX-y5-TnS"/>
+                    <navigationItem key="navigationItem" title="Calculator" id="SZX-y5-TnS"/>
                     <connections>
                         <outlet property="display" destination="goo-FQ-bLF" id="aLW-8m-SwV"/>
                         <outlet property="log" destination="xts-B3-NDN" id="Dei-bK-Aj6"/>
@@ -529,7 +532,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" id="QTa-j9-yrw"/>
+                    <navigationItem key="navigationItem" title="Graph" id="QTa-j9-yrw"/>
                     <connections>
                         <outlet property="graphView" destination="B7b-uN-X2h" id="1oF-mk-NiU"/>
                     </connections>
@@ -555,6 +558,25 @@
             <point key="canvasLocation" x="401" y="105"/>
         </scene>
     </scenes>
+    <classes>
+        <class className="CalculatorViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/CalculatorViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="display" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="log" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="variablesValues" candidateClass="UILabel"/>
+            </relationships>
+        </class>
+        <class className="GraphView" superclassName="UIView">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/GraphView.h"/>
+        </class>
+        <class className="GraphViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/GraphViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="graphView" candidateClass="GraphView"/>
+            </relationships>
+        </class>
+    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

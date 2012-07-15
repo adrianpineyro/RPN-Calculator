@@ -206,6 +206,20 @@
     
 }
 
+
+
+- (IBAction)graphPressed:(id)sender {
+    [self performSegueWithIdentifier:@"ShowGraph" sender:self];
+    
+}
+
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+    
+    
+    
+}
+
+
 - (void)viewDidUnload {
     [self setLog:nil];
     [self setVariablesValues:nil];
