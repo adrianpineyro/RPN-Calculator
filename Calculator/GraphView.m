@@ -12,8 +12,27 @@
 @implementation GraphView
 
 @synthesize midPoint = _midPoint;
+@synthesize scale = _scale;
 
--(void) setup {
+#define DEFAULT_SCALE 0.9
+
+- (CGFloat) scale
+{
+    if (! _scale) {
+        _scale=DEFAULT_SCALE;
+    }
+    return _scale;
+}
+
+- (void)setScale:(CGFloat)scale
+{
+    if (scale != _scale) {
+        _scale = scale;
+        [self setNeedsDisplay];
+    }
+}
+
+-(void)setup {
     self.contentMode = UIViewContentModeRedraw;
     self.midPoint = CGPointMake((self.bounds.origin.x + self.bounds.size.width/2),
                                 (self.bounds.origin.y + self.bounds.size.height/2));
@@ -47,18 +66,23 @@
     
 }
 
+- (void)pinch:(UIPinchGestureRecognizer *)gesture
+{
+    if ((gesture.state == UIGestureRecognizerStateChanged) ||
+        (gesture.state == UIGestureRecognizerStateEnded)) {
+        self.scale *= gesture.scale;
+        gesture.scale = 1;
+    }
+    
+}
+
 - (void)drawRect:(CGRect)rect
 {
-     
-    
-    CGFloat scale;
-    
-    scale = 0.90;
-    
+        
     // Drawing code
     CGRect baseRect = self.bounds;
-    baseRect.origin.x += 0;
-    baseRect.origin.y += 0;
+    baseRect.origin.x = 0;
+    baseRect.origin.y = 0;
     
     // BoundaryRect
     CGContextRef context = UIGraphicsGetCurrentContext();
@@ -67,12 +91,9 @@
     // CGContextFillPath(context);    
     CGContextStrokePath(context); 
     
-    [AxesDrawer drawAxesInRect:baseRect originAtPoint:self.midPoint scale:scale];
-
+    [AxesDrawer drawAxesInRect:baseRect originAtPoint:self.midPoint scale:self.scale];
     
     //[self drawCirclesAtPoint:self.midPoint withRadius:10*M_PI inContext:context];
-
-    
 }
 
 @end

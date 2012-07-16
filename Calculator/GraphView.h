@@ -10,5 +10,6 @@
 
 @interface GraphView : UIView
 @property (nonatomic,assign) CGPoint midPoint;
+@property (nonatomic,assign) CGFloat scale;
 
 @end
