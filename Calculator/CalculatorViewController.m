@@ -55,7 +55,7 @@
     for (int i=0; i < keys.count; i++) {
         if([self.testVariableValues objectForKey:[keys objectAtIndex:i]]){
             //If the key is in testVariableValues, it is used an it must be show 
-            text = [NSString stringWithFormat:@"%@ = %@ ",[keys objectAtIndex:i],[self.testVariableValues valueForKey:[keys objectAtIndex:i]]]; 
+            text = [NSString stringWithFormat:@"%@ = %@ \n",[keys objectAtIndex:i],[self.testVariableValues valueForKey:[keys objectAtIndex:i]]]; 
             variablesList = [variablesList stringByAppendingString:text];
         }
     }
@@ -73,15 +73,17 @@
     
     if ([result isKindOfClass:[NSString class]]){
         self.display.text = result;
-    } else{
+        //if the result is an error we delete from the program the last operation which couse the error
+        if([result length] > 4 && [[result substringToIndex:5]isEqualToString:@"Error"]) [program removeLastObject]; 
+    } else {
         self.display.text = [NSString stringWithFormat:@"%@", result];
     }
     self.log.text = [BrainCalculator descriptionOfProgram:program];
     self.variablesValues.text = [self showVariablesUsed:program];
     
-    //Limit to not show the whole description, just the last 40
-    if (self.log.text.length > 40)
-        self.log.text = [[self.log.text substringToIndex:40] stringByAppendingString:@" ..."];
+    //Limit to not show the whole description, just the last 60
+    if (self.log.text.length > 50)
+        self.log.text = [[self.log.text substringToIndex:50] stringByAppendingString:@" ..."];
     
 }
 
@@ -111,9 +113,14 @@
 }
 
 - (IBAction)enterPressed {
-    NSNumber *number = [NSNumber numberWithDouble:[self.display.text doubleValue]];
+      
+    if (![[self testVariableValues] objectForKey:(self.display.text)]) {
+
+        NSNumber *number = [NSNumber numberWithDouble:[self.display.text doubleValue]];
+        [self.stack addObject:number];
+
+    }
     
-    [self.stack addObject:number];
     self.userIsInTheMiddleOfEnteringANumber = NO;
     
 }
@@ -214,9 +221,7 @@
 }
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
-    
-    
-    
+        
 }
 
 

@@ -85,7 +85,7 @@
     id topOfStack = [stack lastObject];
     NSString *description;
     
-    description = @"0";
+    description = @"";
     if (topOfStack) [stack removeLastObject];
     
     if ([topOfStack isKindOfClass:[NSString class]]) {
@@ -136,6 +136,7 @@
     }
     
     description = [self descriptionOfTopOfStack:stack];
+    
     //Remove parentheses. e.g. (2+2) -> 2+2
     description = [self removeBorderParentheses:description];
     
@@ -145,6 +146,21 @@
     }
     
     return description;
+}
+
++(bool)isAnError:(id)lastOperand{
+    
+    //Stop on error
+    if([lastOperand isKindOfClass:[NSString class]]){
+        NSString *text = lastOperand;
+        if([lastOperand length] > 4 ){
+            if([[text substringToIndex:5] isEqualToString:@"Error"]){
+                return true;
+            }
+        }
+    }
+    return false;
+    
 }
 
 //Its returns a NSNumber (if no error) with the result of the operation on the top of the programStack, it calls its self if it find more operation
@@ -164,39 +180,68 @@
         return topOfStack;
     } else if ([topOfStack isKindOfClass:[NSString class]]){
         NSString *operation = topOfStack;
+        id lastOperand;
         
-        if ([operation isEqualToString:@"+"]){
-            result = [NSNumber numberWithDouble:[[self popOperandOffStack:stack] doubleValue] + [[self popOperandOffStack:stack] doubleValue]];
-        } else if ([operation isEqualToString:@"*"]){
-            result = [NSNumber numberWithDouble:[[self popOperandOffStack:stack] doubleValue] * [[self popOperandOffStack:stack] doubleValue]];
-        }else if ([operation isEqualToString:@"-"]){
-            double subtrahend = [[self popOperandOffStack:stack] doubleValue];
-            result = [NSNumber numberWithDouble:[[self popOperandOffStack:stack] doubleValue] - subtrahend];
-        }else if ([operation isEqualToString:@"/"]){
-            double divisor = [[self popOperandOffStack:stack] doubleValue];
-            if (divisor){
-                result = [NSNumber numberWithDouble:[[self popOperandOffStack:stack] doubleValue] / divisor];
-            } else {
-                result = @"Error: Division by 0";
-            }
-        }else if ([operation isEqualToString:@"sin"]){
-            result = [NSNumber numberWithDouble:sin([[self popOperandOffStack:stack] doubleValue])];
-        }else if ([operation isEqualToString:@"cos"]){
-            result = [NSNumber numberWithDouble:cos([[self popOperandOffStack:stack] doubleValue])];
-        }else if ([operation isEqualToString:@"sqrt"]){
-            double number = [[self popOperandOffStack:stack] doubleValue];
-            if (number > 0){
-                result = [NSNumber numberWithDouble: sqrt(number)];
-            } else {
-                result = @"Error: Negative Sqrt";
-            }
-        }else if ([operation isEqualToString:@"π"]){
-            result = [NSNumber numberWithDouble: 3.141592];
-        }else if ([operation isEqualToString:@"+/-"]){
-            double number = [[self popOperandOffStack:stack] doubleValue];
-            result = [NSNumber numberWithDouble: number * -1];
+        //I have to take the next operand as this point to stop on error; PI is the only operand with doen't need another operand, is just like a number
+        if (![operation isEqualToString:@"π"]){
+             lastOperand = [self popOperandOffStack:stack];
         }
         
+        //Stop on error
+        if([self isAnError:lastOperand]){
+            [stack removeAllObjects];
+            //Return the string describing the error
+            return lastOperand;
+        }
+        
+        
+        if ([self isTwoOperandOperation:operation]) {
+            id nextOperand = [self popOperandOffStack:stack];
+            
+            //If at the next level we had an error we also should stop
+            if([self isAnError:nextOperand]){
+                [stack removeAllObjects];
+                //Return the string describing the error
+                return nextOperand;
+            }
+            
+            if ([operation isEqualToString:@"+"]){
+                result = [NSNumber numberWithDouble:[lastOperand doubleValue] + [nextOperand doubleValue]];
+            } else if ([operation isEqualToString:@"*"]){
+                result = [NSNumber numberWithDouble:[lastOperand doubleValue] * [nextOperand doubleValue]];
+            }else if ([operation isEqualToString:@"-"]){
+                double subtrahend = [lastOperand doubleValue];
+                result = [NSNumber numberWithDouble:[nextOperand doubleValue] - subtrahend];
+            }else if ([operation isEqualToString:@"/"]){
+                double divisor = [lastOperand doubleValue];
+                if (divisor){
+                    result = [NSNumber numberWithDouble:[nextOperand doubleValue] / divisor];
+                } else {
+                    result = @"Error: Division by 0";
+                }
+            }
+            
+        }else{
+            
+            if ([operation isEqualToString:@"sin"]){
+                result = [NSNumber numberWithDouble:sin([lastOperand doubleValue])];
+            }else if ([operation isEqualToString:@"cos"]){
+                result = [NSNumber numberWithDouble:cos([lastOperand doubleValue])];
+            }else if ([operation isEqualToString:@"sqrt"]){
+                double number = [lastOperand doubleValue];
+                if (number > 0){
+                    result = [NSNumber numberWithDouble: sqrt(number)];
+                } else {
+                    result = @"Error: Negative Sqrt";
+                }
+            }else if ([operation isEqualToString:@"π"]){
+                result = [NSNumber numberWithDouble: M_PI];
+            }else if ([operation isEqualToString:@"+/-"]){
+                double number = [lastOperand doubleValue];
+                result = [NSNumber numberWithDouble: number * -1];
+            }
+            
+        }
     }
     
     return result;
