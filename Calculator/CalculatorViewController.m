@@ -161,6 +161,10 @@
     self.display.text = @"0";
     self.variablesValues.text = @"";
     [self.stack removeAllObjects];
+    
+    if (self.splitViewController) {
+        [[[self.splitViewController viewControllers] lastObject] setProgram: nil]; 
+    }
 }
 
 //This is for delete the last number pressed or the last operand/operation sent
@@ -215,7 +219,11 @@
 }
 
 - (IBAction)graphPressed:(id)sender {
-    [self performSegueWithIdentifier:@"ShowGraph" sender:self];
+    if (self.splitViewController) {
+        [[[self.splitViewController viewControllers] lastObject] setProgram: self.stack]; 
+    } else{
+        [self performSegueWithIdentifier:@"ShowGraph" sender:self];
+    }
     
 }
 
@@ -223,6 +231,10 @@
         [segue.destinationViewController setProgram: self.stack];
 }
 
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    return YES;
+}
 
 - (void)viewDidUnload {
     [self setLog:nil];

@@ -51,6 +51,7 @@
 -(void)setProgram:(id)program
 {
     _program = program;
+    [self.graphView setNeedsDisplay];
 }
 
 - (void)setGraphView:(GraphView *)graphView
@@ -71,7 +72,7 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+    return YES;
 }
 
 -(NSMutableArray *) getProgram
