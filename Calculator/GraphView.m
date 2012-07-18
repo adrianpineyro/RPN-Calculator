@@ -16,7 +16,7 @@
 @synthesize scale = _scale;
 @synthesize datasource = _datasource;
 
-#define DEFAULT_SCALE 0.9
+#define DEFAULT_SCALE 4
 
 - (CGFloat) scale
 {
@@ -126,9 +126,7 @@
     for (float i = 0; i <= self.bounds.size.width; i+= 1.0/self.contentScaleFactor)
     {
         double xValue = (i - self.midPoint.x)/self.scale;
-        
-        NSLog(@"%f",xValue);
-        
+               
         double yValue = 0;
         NSDictionary* variableValues = [NSDictionary dictionaryWithObject:[NSNumber numberWithFloat:xValue] forKey:@"x"];
         id result = [BrainCalculator runProgram:program usingVariableValues:variableValues];
@@ -136,7 +134,7 @@
         if([result isKindOfClass:[NSNumber class]])
         {
             yValue = self.midPoint.y - ([result doubleValue] * self.scale);
-            if(self.datasource.needAccuracy){
+            if([self.datasource needAccuracy]){
                 CGPoint actualPoint;
                 actualPoint.x=i;
                 actualPoint.y=yValue;

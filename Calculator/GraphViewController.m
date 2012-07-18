@@ -11,6 +11,7 @@
 
 @interface GraphViewController()
 @property (weak, nonatomic) IBOutlet GraphView *graphView;
+@property (nonatomic) BOOL accuracy;
 @end
 
 @implementation GraphViewController
@@ -18,7 +19,7 @@
 @synthesize graphView = _graphView;
 @synthesize program = _program;
 @synthesize log =_log;
-@synthesize needAccuracy = _needAccuracy;
+@synthesize accuracy = accuracy;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -28,17 +29,23 @@
     }
     return self;
 }
+
 - (IBAction)accuracySwitchChange:(UISwitch *)sender
 {
     
     if(sender.on)
     {
-        self.needAccuracy = YES;
+        self.accuracy = YES;
     } else {
-        self.needAccuracy = NO;
+        self.accuracy = NO;
     }
     
     [self.graphView setNeedsDisplay];
+}
+
+-(BOOL)needAccuracy
+{
+    return self.accuracy;
 }
 
 -(void)setProgram:(id)program
