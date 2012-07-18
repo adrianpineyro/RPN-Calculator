@@ -9,7 +9,8 @@
 #import "GraphViewController.h"
 #import "BrainCalculator.h"
 
-@interface GraphViewController() <GraphViewDataSource>
+@interface GraphViewController()
+@property (weak, nonatomic) IBOutlet GraphView *graphView;
 @end
 
 @implementation GraphViewController
@@ -17,6 +18,7 @@
 @synthesize graphView = _graphView;
 @synthesize program = _program;
 @synthesize log =_log;
+@synthesize needAccuracy = _needAccuracy;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -26,16 +28,37 @@
     }
     return self;
 }
+- (IBAction)accuracySwitchChange:(UISwitch *)sender
+{
+    
+    if(sender.on)
+    {
+        self.needAccuracy = YES;
+    } else {
+        self.needAccuracy = NO;
+    }
+    
+    [self.graphView setNeedsDisplay];
+}
 
--(void)setProgram:(id)program{
+-(void)setProgram:(id)program
+{
     _program = program;
 }
 
-- (void)setGraphView:(GraphView *)graphView{
+- (void)setGraphView:(GraphView *)graphView
+{
     
     _graphView=graphView;
-    [self.graphView addGestureRecognizer:[[UIPinchGestureRecognizer alloc] initWithTarget:self.graphView action:@selector(pinch:)]];    
     self.graphView.datasource = self;
+    
+    UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self.graphView action:@selector(tap:)];
+    tapRecognizer.numberOfTapsRequired=3;
+    
+    [self.graphView addGestureRecognizer:[[UIPinchGestureRecognizer alloc] initWithTarget:self.graphView action:@selector(pinch:)]];   
+    [self.graphView addGestureRecognizer:[[UIPanGestureRecognizer alloc] initWithTarget:self.graphView action:@selector(pan:)]];   
+    [self.graphView addGestureRecognizer: tapRecognizer];
+
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -48,6 +71,7 @@
 {
     self.log.text = [BrainCalculator descriptionOfProgram:self.program];
     return self.program;
+    
 }
 
 @end

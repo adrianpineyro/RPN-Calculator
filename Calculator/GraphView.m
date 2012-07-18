@@ -18,9 +18,6 @@
 
 #define DEFAULT_SCALE 0.9
 
-//Lazy initialization
-
-
 - (CGFloat) scale
 {
     if (! _scale) {
@@ -80,9 +77,31 @@
     
 }
 
+- (void)pan:(UIPanGestureRecognizer *)gesture
+{
+    if ((gesture.state == UIGestureRecognizerStateChanged) ||
+        (gesture.state == UIGestureRecognizerStateEnded)) {
+        
+        CGPoint translation = [gesture translationInView:self]; 
+
+        self.midPoint = CGPointMake(translation.x+self.midPoint.x,translation.y+self.midPoint.y);
+    }
+    [self setNeedsDisplay]; 
+    [gesture setTranslation:CGPointZero inView:self];
+    
+}
+
+- (void)tap:(UITapGestureRecognizer *)gesture
+{
+    self.midPoint = [gesture locationInView:self];
+    [self setNeedsDisplay]; 
+
+}
+
+
 - (void)drawRect:(CGRect)rect
 {
-        
+    
     // Drawing code
     CGRect baseRect = self.bounds;
     baseRect.origin.x = 0;
@@ -103,18 +122,31 @@
 
     // Move starting point outside the graph
     CGContextMoveToPoint(context,-1,-1);
-
     
-    for (float i = -self.bounds.size.width; i < self.bounds.size.width; i+=0.25)
+    for (float i = 0; i <= self.bounds.size.width; i+= 1.0/self.contentScaleFactor)
     {
-        NSDictionary* variableValues = [NSDictionary dictionaryWithObject:[NSNumber numberWithFloat:i] forKey:@"x"];
-        id result = [BrainCalculator runProgram:program usingVariableValues:variableValues];
+        double xValue = (i - self.midPoint.x)/self.scale;
+        
+        NSLog(@"%f",xValue);
+        
         double yValue = 0;
+        NSDictionary* variableValues = [NSDictionary dictionaryWithObject:[NSNumber numberWithFloat:xValue] forKey:@"x"];
+        id result = [BrainCalculator runProgram:program usingVariableValues:variableValues];
         
         if([result isKindOfClass:[NSNumber class]])
         {
-            yValue = [result doubleValue];
-            CGContextAddLineToPoint(context, self.midPoint.x + i * self.scale, self.midPoint.y - yValue * self.scale);
+            yValue = self.midPoint.y - ([result doubleValue] * self.scale);
+            if(self.datasource.needAccuracy){
+                CGPoint actualPoint;
+                actualPoint.x=i;
+                actualPoint.y=yValue;
+                
+                CGFloat radius = 0.1;
+                [self drawCirclesAtPoint:(CGPoint)actualPoint withRadius:(CGFloat)radius inContext:(CGContextRef)context];
+                
+            }else{
+                CGContextAddLineToPoint(context,i,yValue);
+            }
         }
     }
     

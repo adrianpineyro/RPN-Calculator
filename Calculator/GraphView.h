@@ -10,6 +10,7 @@
 
 @protocol GraphViewDataSource
 - (NSMutableArray *) getProgram;
+@property (assign) bool *needAccuracy;
 @end
 
 @interface GraphView : UIView 
