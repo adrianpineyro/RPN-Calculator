@@ -8,9 +8,13 @@
 
 #import "GraphViewController.h"
 
+@interface GraphViewController() <GraphViewDataSource>
+@end
+
 @implementation GraphViewController
 
 @synthesize graphView = _graphView;
+@synthesize program = _program;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -25,8 +29,8 @@
 - (void)setGraphView:(GraphView *)graphView{
     
     _graphView=graphView;
-
-    [self.graphView addGestureRecognizer:[[UIPinchGestureRecognizer alloc] initWithTarget:self.graphView action:@selector(pinch:)]];
+    [self.graphView addGestureRecognizer:[[UIPinchGestureRecognizer alloc] initWithTarget:self.graphView action:@selector(pinch:)]];    
+    self.graphView.datasource = self;
         
 }
 
@@ -34,6 +38,11 @@
 {
     // Return YES for supported orientations
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
+-(NSMutableArray *) getProgram
+{
+    return self.program;
 }
 
 @end

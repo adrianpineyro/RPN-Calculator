@@ -8,8 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
-@interface GraphView : UIView
-@property (nonatomic,assign) CGPoint midPoint;
-@property (nonatomic,assign) CGFloat scale;
+@protocol GraphViewDataSource
+- (NSMutableArray *) getProgram;
+@end
+
+@interface GraphView : UIView 
+
+@property (nonatomic) CGPoint midPoint;
+@property (nonatomic) CGFloat scale;
+@property (strong,nonatomic) id <GraphViewDataSource> datasource;
 
 @end

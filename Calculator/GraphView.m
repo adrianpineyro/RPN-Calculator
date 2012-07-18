@@ -8,13 +8,18 @@
 
 #import "GraphView.h"
 #import "AxesDrawer.h"
+#import "BrainCalculator.h"
 
 @implementation GraphView
 
 @synthesize midPoint = _midPoint;
 @synthesize scale = _scale;
+@synthesize datasource = _datasource;
 
 #define DEFAULT_SCALE 0.9
+
+//Lazy initialization
+
 
 - (CGFloat) scale
 {
@@ -50,7 +55,6 @@
     }
     return self;
 }
-
 
 -(void)drawCirclesAtPoint:(CGPoint)p 
                withRadius:(CGFloat)radius 
@@ -88,12 +92,39 @@
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSetFillColorWithColor(context, [UIColor redColor].CGColor);
     CGContextAddRect(context, baseRect);
-    // CGContextFillPath(context);    
-    CGContextStrokePath(context); 
     
     [AxesDrawer drawAxesInRect:baseRect originAtPoint:self.midPoint scale:self.scale];
     
-    //[self drawCirclesAtPoint:self.midPoint withRadius:10*M_PI inContext:context];
+    CGContextBeginPath (context);
+    CGContextSetStrokeColorWithColor(context, [UIColor blueColor].CGColor);
+
+    NSMutableArray *program = [self.datasource getProgram];
+        
+    //NSNumber *number = [NSNumber numberWithDouble:16];
+    //[program addObject:number];
+    //[program addObject:@"x"];
+    //[program addObject:@"sin"];
+    //NSLog(@"%@",program);
+
+    CGContextMoveToPoint(context,-1,-1);
+
+    
+    for (float i = -self.bounds.size.width; i < self.bounds.size.width; i+=0.25)
+    {
+        NSDictionary* variableValues = [NSDictionary dictionaryWithObject:[NSNumber numberWithFloat:i] forKey:@"x"];
+        id result = [BrainCalculator runProgram:program usingVariableValues:variableValues];
+        double yValue = 0;
+        
+        if([result isKindOfClass:[NSNumber class]])
+        {
+            yValue = [result doubleValue];
+            CGContextAddLineToPoint(context, self.midPoint.x + i * self.scale, self.midPoint.y - yValue * self.scale);
+
+        }
+    }
+    
+    CGContextStrokePath(context);
+    
 }
 
 @end

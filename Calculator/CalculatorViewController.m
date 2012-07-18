@@ -8,6 +8,7 @@
 
 #import "CalculatorViewController.h"
 #import "BrainCalculator.h"
+#import "GraphViewController.h"
 
 @interface CalculatorViewController()
 @property (nonatomic) BOOL userIsInTheMiddleOfEnteringANumber;
@@ -213,15 +214,13 @@
     
 }
 
-
-
 - (IBAction)graphPressed:(id)sender {
     [self performSegueWithIdentifier:@"ShowGraph" sender:self];
     
 }
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
-        
+        [segue.destinationViewController setProgram: self.stack];
 }
 
 
