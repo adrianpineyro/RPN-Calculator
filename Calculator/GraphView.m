@@ -98,14 +98,10 @@
     CGContextBeginPath (context);
     CGContextSetStrokeColorWithColor(context, [UIColor blueColor].CGColor);
 
+    // Getting the program from the datasource (Usually GraphViewController)
     NSMutableArray *program = [self.datasource getProgram];
-        
-    //NSNumber *number = [NSNumber numberWithDouble:16];
-    //[program addObject:number];
-    //[program addObject:@"x"];
-    //[program addObject:@"sin"];
-    //NSLog(@"%@",program);
 
+    // Move starting point outside the graph
     CGContextMoveToPoint(context,-1,-1);
 
     
@@ -119,7 +115,6 @@
         {
             yValue = [result doubleValue];
             CGContextAddLineToPoint(context, self.midPoint.x + i * self.scale, self.midPoint.y - yValue * self.scale);
-
         }
     }
     
