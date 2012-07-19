@@ -43,6 +43,7 @@
 		3A429A7815B37DB8009C6AAA /* GraphView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GraphView.m; sourceTree = "<group>"; };
 		3A429A8015B37E74009C6AAA /* GraphViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GraphViewController.h; sourceTree = "<group>"; };
 		3A429A8115B37E74009C6AAA /* GraphViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GraphViewController.m; sourceTree = "<group>"; };
+		3A5DD43A15B7885400FF47C2 /* SplitViewBarButtonItemPresenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SplitViewBarButtonItemPresenter.h; sourceTree = "<group>"; };
 		3AAE25EB15B380170043081E /* AxesDrawer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AxesDrawer.h; sourceTree = "<group>"; };
 		3AAE25EC15B380170043081E /* AxesDrawer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AxesDrawer.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -106,6 +107,7 @@
 				3A429A7815B37DB8009C6AAA /* GraphView.m */,
 				3A429A8015B37E74009C6AAA /* GraphViewController.h */,
 				3A429A8115B37E74009C6AAA /* GraphViewController.m */,
+				3A5DD43A15B7885400FF47C2 /* SplitViewBarButtonItemPresenter.h */,
 			);
 			path = Calculator;
 			sourceTree = "<group>";

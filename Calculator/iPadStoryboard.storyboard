@@ -16,12 +16,39 @@
                             <view contentMode="scaleToFill" id="asQ-Xf-amV" customClass="GraphView">
                                 <rect key="frame" x="0.0" y="44" width="768" height="960"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <subviews>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="ƒ(x) = " lineBreakMode="tailTruncation" minimumFontSize="10" id="ALL-AL-fJd">
+                                        <rect key="frame" x="20" y="20" width="49" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="x + 2" lineBreakMode="tailTruncation" minimumFontSize="10" id="SLD-Nw-8Ce">
+                                        <rect key="frame" x="75" y="20" width="673" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             </view>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="zI4-S8-e9v">
                                 <rect key="frame" x="0.0" y="0.0" width="768" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
-                                <items/>
+                                <items>
+                                    <barButtonItem style="plain" id="77o-79-8DF">
+                                        <switch key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="62p-c0-icM">
+                                            <rect key="frame" x="12" y="9" width="79" height="27"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <connections>
+                                                <action selector="accuracySwitchChange:" destination="Rsi-un-mzs" eventType="valueChanged" id="op8-MO-YAy"/>
+                                            </connections>
+                                        </switch>
+                                    </barButtonItem>
+                                    <barButtonItem title="accuracy" style="plain" id="iHW-kX-kRG"/>
+                                </items>
                             </toolbar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -29,6 +56,8 @@
                     <toolbarItems/>
                     <connections>
                         <outlet property="graphView" destination="asQ-Xf-amV" id="agh-HU-T7a"/>
+                        <outlet property="log" destination="SLD-Nw-8Ce" id="VXt-5H-QPa"/>
+                        <outlet property="toolbar" destination="zI4-S8-e9v" id="kbX-7Q-6QR"/>
                     </connections>
                 </viewController>
             </objects>
@@ -574,6 +603,7 @@
                 <relationship kind="outlet" name="graphView" candidateClass="GraphView"/>
                 <relationship kind="outlet" name="log" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="program"/>
+                <relationship kind="outlet" name="toolbar" candidateClass="UIToolbar"/>
             </relationships>
         </class>
     </classes>

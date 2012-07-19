@@ -44,8 +44,6 @@
 
 -(void)setup {
     self.contentMode = UIViewContentModeRedraw;
-    self.midPoint = CGPointMake((self.bounds.origin.x + self.bounds.size.width/2),
-                                (self.bounds.origin.y + self.bounds.size.height/2));
 }
 
 -(void)awakeFromNib{
@@ -107,6 +105,9 @@
 - (void)drawRect:(CGRect)rect
 {
     
+    self.midPoint = CGPointMake((self.bounds.origin.x + self.bounds.size.width/2),
+                                (self.bounds.origin.y + self.bounds.size.height/2));
+    
     // Drawing code
     CGRect baseRect = self.bounds;
     baseRect.origin.x = 0;
@@ -139,6 +140,7 @@
         if([result isKindOfClass:[NSNumber class]])
         {
             yValue = self.midPoint.y - ([result doubleValue] * self.scale);
+
             if([self.datasource needAccuracy]){
                 CGPoint actualPoint;
                 actualPoint.x=i;
@@ -150,6 +152,8 @@
             }else{
                 CGContextAddLineToPoint(context,i,yValue);
             }
+        }else{
+            CGContextMoveToPoint(context,i,self.midPoint.y);
         }
     }
     

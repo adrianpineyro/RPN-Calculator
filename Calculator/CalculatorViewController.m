@@ -218,17 +218,9 @@
     
 }
 
-- (IBAction)graphPressed:(id)sender {
-    if (self.splitViewController) {
-        [[[self.splitViewController viewControllers] lastObject] setProgram: self.stack]; 
-    } else{
-        [self performSegueWithIdentifier:@"ShowGraph" sender:self];
-    }
-    
-}
-
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
         [segue.destinationViewController setProgram: self.stack];
+        //[self transferSplitViewBarButtonItemToViewController:segue.destinationViewController];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -236,8 +228,37 @@
     if (self.splitViewController) {
         return YES;
     }else{
-        return NO;
+        return UIInterfaceOrientationIsPortrait(interfaceOrientation);
     }
+}
+
+- (id <SplitViewBarButtonItemPresenter>)splitViewBarButtonItemPresenter
+{
+    id detailVC = [self.splitViewController.viewControllers lastObject];
+    if (![detailVC conformsToProtocol:@protocol(SplitViewBarButtonItemPresenter)]) {
+        detailVC = nil;
+    }
+    return detailVC;
+}
+
+- (void)transferSplitViewBarButtonItemToViewController:(id)destinationViewController
+{
+    UIBarButtonItem *splitViewBarButtonItem = [[self splitViewBarButtonItemPresenter] splitViewBarButtonItem];
+    [[self splitViewBarButtonItemPresenter] setSplitViewBarButtonItem:nil];
+    if (splitViewBarButtonItem) {
+        [destinationViewController setSplitViewBarButtonItem:splitViewBarButtonItem];
+    }
+}
+
+- (IBAction)graphPressed:(id)sender {
+    if (self.splitViewController) {
+        id destinationViewController = [[self.splitViewController viewControllers] lastObject];
+        [destinationViewController setProgram: self.stack]; 
+        [self transferSplitViewBarButtonItemToViewController:destinationViewController];
+    } else{
+        [self performSegueWithIdentifier:@"ShowGraph" sender:self];
+    }
+    
 }
 
 - (void)viewDidUnload {

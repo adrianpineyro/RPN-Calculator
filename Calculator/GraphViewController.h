@@ -8,10 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import "GraphView.h"
+#import "SplitViewBarButtonItemPresenter.h"
 
-@interface GraphViewController : UIViewController <GraphViewDataSource>{
-    BOOL needAccuracy;
-}
+@interface GraphViewController : UIViewController <GraphViewDataSource,UISplitViewControllerDelegate,SplitViewBarButtonItemPresenter>
+
 
 @property (strong, nonatomic) IBOutlet id program;
 @property (weak, nonatomic) IBOutlet UILabel *log;
