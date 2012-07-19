@@ -9,18 +9,30 @@
             <objects>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6mb-Ze-ypL" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController id="Rsi-un-mzs" customClass="GraphViewController" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="UmQ-LB-1WT" customClass="GraphView">
+                    <view key="view" contentMode="scaleToFill" id="UmQ-LB-1WT">
                         <rect key="frame" x="0.0" y="20" width="768" height="1004"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" id="asQ-Xf-amV" customClass="GraphView">
+                                <rect key="frame" x="0.0" y="44" width="768" height="960"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                            </view>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="zI4-S8-e9v">
+                                <rect key="frame" x="0.0" y="0.0" width="768" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
+                                <items/>
+                            </toolbar>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <toolbarItems/>
                     <connections>
-                        <outlet property="graphView" destination="UmQ-LB-1WT" id="fJa-vr-V7B"/>
+                        <outlet property="graphView" destination="asQ-Xf-amV" id="agh-HU-T7a"/>
                     </connections>
                 </viewController>
             </objects>
-            <point key="canvasLocation" x="-182" y="-212"/>
+            <point key="canvasLocation" x="-132" y="56"/>
         </scene>
         <scene sceneID="d5A-3W-w2z">
             <objects>

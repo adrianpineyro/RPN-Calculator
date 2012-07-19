@@ -19,7 +19,7 @@
 @synthesize graphView = _graphView;
 @synthesize program = _program;
 @synthesize log =_log;
-@synthesize accuracy = accuracy;
+@synthesize accuracy = _accuracy;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -30,30 +30,17 @@
     return self;
 }
 
-- (IBAction)accuracySwitchChange:(UISwitch *)sender
-{
-    
-    if(sender.on)
-    {
-        self.accuracy = YES;
-    } else {
-        self.accuracy = NO;
-    }
-    
-    [self.graphView setNeedsDisplay];
-}
-
--(BOOL)needAccuracy
-{
-    return self.accuracy;
-}
-
--(void)setProgram:(id)program
-{
+-(void)setProgram:(id)program{
     _program = program;
     [self.graphView setNeedsDisplay];
 }
 
+-(void)setAccuracy:(BOOL)accuracy{
+    if (_accuracy != accuracy) {
+        _accuracy = accuracy;
+        [self.graphView setNeedsDisplay];
+    }
+}
 - (void)setGraphView:(GraphView *)graphView
 {
     
@@ -69,10 +56,14 @@
 
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+- (IBAction)accuracySwitchChange:(UISwitch *)sender
 {
-    // Return YES for supported orientations
-    return YES;
+    if(sender.on)
+    {
+        self.accuracy = YES;
+    } else {
+        self.accuracy = NO;
+    }
 }
 
 -(NSMutableArray *) getProgram
@@ -81,5 +72,17 @@
     return self.program;
     
 }
+
+-(BOOL)needAccuracy
+{
+   return self.accuracy;
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    // Return YES for supported orientations
+    return YES;
+}
+
 
 @end

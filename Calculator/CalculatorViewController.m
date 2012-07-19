@@ -233,7 +233,11 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    return YES;
+    if (self.splitViewController) {
+        return YES;
+    }else{
+        return NO;
+    }
 }
 
 - (void)viewDidUnload {

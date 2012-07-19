@@ -34,6 +34,14 @@
     }
 }
 
+- (void)setMidPoint:(CGPoint)midPoint
+{
+    if (midPoint.x != _midPoint.x || midPoint.y != _midPoint.y) {
+        _midPoint = midPoint;
+        [self setNeedsDisplay];
+    }
+}
+
 -(void)setup {
     self.contentMode = UIViewContentModeRedraw;
     self.midPoint = CGPointMake((self.bounds.origin.x + self.bounds.size.width/2),
@@ -86,7 +94,6 @@
 
         self.midPoint = CGPointMake(translation.x+self.midPoint.x,translation.y+self.midPoint.y);
     }
-    [self setNeedsDisplay]; 
     [gesture setTranslation:CGPointZero inView:self];
     
 }
@@ -94,8 +101,6 @@
 - (void)tap:(UITapGestureRecognizer *)gesture
 {
     self.midPoint = [gesture locationInView:self];
-    [self setNeedsDisplay]; 
-
 }
 
 
