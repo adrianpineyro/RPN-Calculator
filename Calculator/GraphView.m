@@ -23,6 +23,7 @@
     if (! _scale) {
         float savedScale = [[NSUserDefaults standardUserDefaults] floatForKey:@"scale"];
         if(savedScale){
+            // Setting the scale from UserDefaults
             _scale = savedScale;
         }else{
             _scale=DEFAULT_SCALE;
@@ -47,6 +48,7 @@
     }
 }
 
+// Used only to recalculate midPoint after rotation, called by controller when ocurrs.
 -(void)recalculateMidPointAfterRotation
 {
     self.midPoint = CGPointMake((self.bounds.origin.x + self.bounds.size.width/2),
@@ -60,6 +62,7 @@
     float savedMidPointy = [[NSUserDefaults standardUserDefaults] floatForKey:@"midPoint.y"];
     
     if(savedMidPointx && savedMidPointy){
+        // Setting the midPoint from UserDefaults
         self.midPoint = CGPointMake(savedMidPointx,savedMidPointy);
     }else{
         self.midPoint = CGPointMake((self.bounds.origin.x + self.bounds.size.width/2),
@@ -180,7 +183,7 @@
     
     CGContextStrokePath(context);
     
-    //Save user scale and midPoint
+    // Save user scale and midPoint
     [[NSUserDefaults standardUserDefaults] setFloat:self.scale forKey:@"scale"];
     [[NSUserDefaults standardUserDefaults] setFloat:self.midPoint.x forKey:@"midPoint.x"];
     [[NSUserDefaults standardUserDefaults] setFloat:self.midPoint.y forKey:@"midPoint.y"];
