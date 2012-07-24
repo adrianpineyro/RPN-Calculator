@@ -13,7 +13,6 @@
 @implementation GraphView
 
 @synthesize midPoint = _midPoint;
-@synthesize relativeOrigin = _relativeOrigin;
 @synthesize scale = _scale;
 @synthesize datasource = _datasource;
 
@@ -22,7 +21,12 @@
 - (CGFloat) scale
 {
     if (! _scale) {
-        _scale=DEFAULT_SCALE;
+        float savedScale = [[NSUserDefaults standardUserDefaults] floatForKey:@"scale"];
+        if(savedScale){
+            _scale = savedScale;
+        }else{
+            _scale=DEFAULT_SCALE;
+        }
     }
     return _scale;
 }
@@ -45,16 +49,23 @@
 
 -(void)recalculateMidPointAfterRotation
 {
-    self.midPoint = CGPointMake((self.bounds.size.width * self.relativeOrigin.x), (self.bounds.size.height * self.relativeOrigin.y));
-    
+    self.midPoint = CGPointMake((self.bounds.origin.x + self.bounds.size.width/2),
+                                (self.bounds.origin.y + self.bounds.size.height/2));    
 }
 
 -(void)setup {
     self.contentMode = UIViewContentModeRedraw;
-    self.midPoint = CGPointMake((self.bounds.origin.x + self.bounds.size.width/2),
-                                (self.bounds.origin.y + self.bounds.size.height/2));
-    // save origin's relative location
-    self.relativeOrigin = CGPointMake(self.midPoint.x / self.bounds.size.width, self.midPoint.y / self.bounds.size.height);
+    
+    float savedMidPointx = [[NSUserDefaults standardUserDefaults] floatForKey:@"midPoint.x"];
+    float savedMidPointy = [[NSUserDefaults standardUserDefaults] floatForKey:@"midPoint.y"];
+    
+    if(savedMidPointx && savedMidPointy){
+        self.midPoint = CGPointMake(savedMidPointx,savedMidPointy);
+    }else{
+        self.midPoint = CGPointMake((self.bounds.origin.x + self.bounds.size.width/2),
+                                    (self.bounds.origin.y + self.bounds.size.height/2));
+    }
+    
 }
 
 -(void)awakeFromNib{
@@ -100,7 +111,7 @@
         (gesture.state == UIGestureRecognizerStateEnded)) {
         
         CGPoint translation = [gesture translationInView:self]; 
-
+        
         self.midPoint = CGPointMake(translation.x+self.midPoint.x,translation.y+self.midPoint.y);
     }
     [gesture setTranslation:CGPointZero inView:self];
@@ -123,18 +134,18 @@
     
     // BoundaryRect
     CGContextRef context = UIGraphicsGetCurrentContext();
-        
+    
     CGContextSetFillColorWithColor(context, [UIColor redColor].CGColor);
     CGContextAddRect(context, baseRect);
     
     [AxesDrawer drawAxesInRect:baseRect originAtPoint:self.midPoint scale:self.scale];
-
+    
     CGContextBeginPath (context);
     CGContextSetStrokeColorWithColor(context, [UIColor blueColor].CGColor);
-
+    
     // Getting the program from the datasource (Usually GraphViewController)
     NSMutableArray *program = [self.datasource getProgram];
-
+    
     // Move starting point outside the graph
     CGContextMoveToPoint(context,-1,-1);
     
@@ -143,13 +154,13 @@
         double xValue = (i - self.midPoint.x)/self.scale;
         
         double yValue = 0;
-        NSDictionary* variableValues = [NSDictionary dictionaryWithObject:[NSNumber numberWithFloat:xValue] forKey:@"x"];
+        NSDictionary *variableValues = [NSDictionary dictionaryWithObject:[NSNumber numberWithFloat:xValue] forKey:@"x"];
         id result = [BrainCalculator runProgram:program usingVariableValues:variableValues];
         
         if([result isKindOfClass:[NSNumber class]])
         {
             yValue = self.midPoint.y - ([result doubleValue] * self.scale);
-
+            
             if([self.datasource needAccuracy]){
                 CGPoint actualPoint;
                 actualPoint.x=i;
@@ -166,8 +177,15 @@
             CGContextMoveToPoint(context,i,self.midPoint.y);
         }
     }
-
+    
     CGContextStrokePath(context);
+    
+    //Save user scale and midPoint
+    [[NSUserDefaults standardUserDefaults] setFloat:self.scale forKey:@"scale"];
+    [[NSUserDefaults standardUserDefaults] setFloat:self.midPoint.x forKey:@"midPoint.x"];
+    [[NSUserDefaults standardUserDefaults] setFloat:self.midPoint.y forKey:@"midPoint.y"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
 }
 
 @end
