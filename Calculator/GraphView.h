@@ -16,7 +16,11 @@
 @interface GraphView : UIView 
 
 @property (nonatomic) CGPoint midPoint;
+@property (nonatomic) CGPoint relativeOrigin;
+
 @property (nonatomic) CGFloat scale;
 @property (strong,nonatomic) id <GraphViewDataSource> datasource;
+
+-(void)recalculateMidPointAfterRotation;
 
 @end

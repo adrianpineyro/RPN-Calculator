@@ -507,7 +507,7 @@
                         <rect key="frame" x="0.0" y="64" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" id="8co-eu-l3C" customClass="GraphView">
+                            <view contentMode="redraw" id="8co-eu-l3C" customClass="GraphView">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="372"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
@@ -532,11 +532,11 @@
                                 <rect key="frame" x="0.0" y="372" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <items>
-                                    <barButtonItem width="131" style="plain" systemItem="fixedSpace" id="2gq-tj-6Jz"/>
-                                    <barButtonItem title="accuracy" style="plain" id="tHH-wr-fET"/>
+                                    <barButtonItem width="171" style="plain" systemItem="fixedSpace" id="2gq-tj-6Jz"/>
+                                    <barButtonItem title="dots" style="plain" id="tHH-wr-fET"/>
                                     <barButtonItem style="plain" id="98V-7c-17x">
                                         <switch key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="nl6-bO-V8j">
-                                            <rect key="frame" x="240" y="9" width="79" height="27"/>
+                                            <rect key="frame" x="236" y="9" width="79" height="27"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <connections>
                                                 <action selector="accuracySwitchChange:" destination="lnX-2H-lEx" eventType="valueChanged" id="IbK-K5-dlG"/>

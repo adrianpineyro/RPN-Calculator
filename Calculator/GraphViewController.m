@@ -127,5 +127,10 @@
     }
 }
 
+-(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    [self.graphView recalculateMidPointAfterRotation];
+}
+
 
 @end

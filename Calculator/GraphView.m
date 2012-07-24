@@ -13,6 +13,7 @@
 @implementation GraphView
 
 @synthesize midPoint = _midPoint;
+@synthesize relativeOrigin = _relativeOrigin;
 @synthesize scale = _scale;
 @synthesize datasource = _datasource;
 
@@ -42,8 +43,18 @@
     }
 }
 
+-(void)recalculateMidPointAfterRotation
+{
+    self.midPoint = CGPointMake((self.bounds.size.width * self.relativeOrigin.x), (self.bounds.size.height * self.relativeOrigin.y));
+    
+}
+
 -(void)setup {
     self.contentMode = UIViewContentModeRedraw;
+    self.midPoint = CGPointMake((self.bounds.origin.x + self.bounds.size.width/2),
+                                (self.bounds.origin.y + self.bounds.size.height/2));
+    // save origin's relative location
+    self.relativeOrigin = CGPointMake(self.midPoint.x / self.bounds.size.width, self.midPoint.y / self.bounds.size.height);
 }
 
 -(void)awakeFromNib{
@@ -105,9 +116,6 @@
 - (void)drawRect:(CGRect)rect
 {
     
-    self.midPoint = CGPointMake((self.bounds.origin.x + self.bounds.size.width/2),
-                                (self.bounds.origin.y + self.bounds.size.height/2));
-    
     // Drawing code
     CGRect baseRect = self.bounds;
     baseRect.origin.x = 0;
@@ -115,11 +123,12 @@
     
     // BoundaryRect
     CGContextRef context = UIGraphicsGetCurrentContext();
+        
     CGContextSetFillColorWithColor(context, [UIColor redColor].CGColor);
     CGContextAddRect(context, baseRect);
     
     [AxesDrawer drawAxesInRect:baseRect originAtPoint:self.midPoint scale:self.scale];
-    
+
     CGContextBeginPath (context);
     CGContextSetStrokeColorWithColor(context, [UIColor blueColor].CGColor);
 
@@ -132,7 +141,7 @@
     for (float i = 0; i <= self.bounds.size.width; i+= 1.0/self.contentScaleFactor)
     {
         double xValue = (i - self.midPoint.x)/self.scale;
-               
+        
         double yValue = 0;
         NSDictionary* variableValues = [NSDictionary dictionaryWithObject:[NSNumber numberWithFloat:xValue] forKey:@"x"];
         id result = [BrainCalculator runProgram:program usingVariableValues:variableValues];
@@ -146,19 +155,19 @@
                 actualPoint.x=i;
                 actualPoint.y=yValue;
                 
-                CGFloat radius = 0.1;
+                CGFloat radius = 0.4;
                 [self drawCirclesAtPoint:(CGPoint)actualPoint withRadius:(CGFloat)radius inContext:(CGContextRef)context];
                 
             }else{
+                //Is an error, as Brain doesn't return a double, but a string with the error description
                 CGContextAddLineToPoint(context,i,yValue);
             }
         }else{
             CGContextMoveToPoint(context,i,self.midPoint.y);
         }
     }
-    
+
     CGContextStrokePath(context);
-    
 }
 
 @end
